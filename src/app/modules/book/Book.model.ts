@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Model } from "mongoose";
 import { Genre, IBook } from "./Book.interface";
 
 const bookSchema = new mongoose.Schema<IBook>(
@@ -39,5 +39,14 @@ const bookSchema = new mongoose.Schema<IBook>(
   }
 );
 
-const Book = mongoose.model<IBook>("Book", bookSchema);
+bookSchema.methods.updateAvailability = async function () {
+  this.available = this.copies > 0;
+};
+
+bookSchema.pre("save", function (next) {
+  this.available = this.copies > 0;
+  next();
+});
+
+const Book: Model<IBook> = mongoose.model<IBook>("Book", bookSchema);
 export default Book;
