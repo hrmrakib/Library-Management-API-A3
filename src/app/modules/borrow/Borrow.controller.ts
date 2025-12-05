@@ -19,3 +19,23 @@ export const borrowBook = async (req: Request, res: Response) => {
   }
 };
 
+export const getBorrowSummary = async (req: Request, res: Response) => {
+  try {
+    const summary = await Borrow.aggregate([
+      {
+        $group: {
+          _id: "$book",
+          totalQuantity: { $sum: "$quantity" },
+        },
+      },
+      {
+        $lookup: {
+          from: "books",
+          localField: "_id",
+          foreignField: "_id",
+          as: "book",
+        },
+      },
+    ]);
+  } catch (error) {}
+};
