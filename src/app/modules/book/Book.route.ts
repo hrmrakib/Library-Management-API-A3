@@ -1,7 +1,18 @@
 import { Router } from "express";
+import {
+  createBook,
+  deleteBook,
+  getAllBooks,
+  getSingleBook,
+  updateBook,
+} from "./Book.controller";
 
-const fozuPagla = Router();
+const router = Router();
 
-fozuPagla.get("/", (req, res) => {});
+router.post("/", createBook);
+router.get("/", getAllBooks);
+router.get("/:bookId", getSingleBook);
+router.put("/:bookId", updateBook);
+router.delete("/:bookId", deleteBook);
 
-export default fozuPagla;
+export default router;
